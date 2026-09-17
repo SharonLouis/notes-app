@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router";
 import api from "../lib/axios";
 
-const CreatePage = () => {
+const CreateNotePage = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
@@ -94,4 +94,4 @@ const CreatePage = () => {
     </div>
   );
 };
-export default CreatePage;
+export default CreateNotePage;

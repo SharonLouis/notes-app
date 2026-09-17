@@ -10,6 +10,14 @@ const noteSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    isImportant:{
+        type: Boolean,
+        default: false,
+    },
+    isBookmarked:{
+        type:Boolean,
+        default:false,
+    }
 },
 {timestamps: true}//createdat , updatedat
 );

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { PenSquareIcon, Trash2Icon } from "lucide-react";
+import { PenSquareIcon, Trash2Icon , BookmarkIcon } from "lucide-react";
 import { formatDate } from "../lib/utils";
 import api from "../lib/axios";
 import toast from "react-hot-toast";
@@ -18,6 +18,17 @@ const NoteCard = ({ note, setNotes }) => {
       toast.error("Failed to delete note");
     }  };
 
+  const handleToggleBookmark = async(id ,currentStatus)=>{
+    try{
+    const res = await api.put(`/notes/${id}`,{isBookmarked:!currentStatus});
+    setNotes((prev)=>prev.map((t)=>(t._id === id? res.data: t)));
+    }catch(error){
+    console.log("error in handleToggleBookmark", error);
+    toast.error("Failed to bookmark a note");
+  }
+
+  };
+
   return (
     <Link
       to={`/note/${note._id}`}
@@ -30,16 +41,28 @@ const NoteCard = ({ note, setNotes }) => {
         <div className="card-actions justify-between items-center mt-4">
           <span className="text-sm text-base-content/60">
             {formatDate(note.createdAt)}
-          </span>
-          <div className="flex items-center gap-1">
-            <PenSquareIcon className="size-4" />
-            <button
-              className="btn btn-ghost btn-xs text-error"
-              onClick={(e) => handleDelete(e, note._id)}
-            >
-              <Trash2Icon className="size-4" />
-            </button>
-          </div>
+          </span> 
+      <div className="flex items-center gap-1">
+  <PenSquareIcon className="size-4" />
+  <button
+    className="btn btn-ghost btn-xs"
+    onClick={(e) => {
+      e.preventDefault();
+      handleToggleBookmark(note._id, note.isBookmarked);
+    }}
+  >
+    <BookmarkIcon
+      className={note.isBookmarked ? "text-primary size-4" : "text-base-content/40 size-4"}
+      fill={note.isBookmarked ? "currentColor" : "none"}
+    />
+  </button>
+  <button
+    className="btn btn-ghost btn-xs text-error"
+    onClick={(e) => handleDelete(e, note._id)}
+  >
+    <Trash2Icon className="size-4" />
+  </button>
+</div>
         </div>
       </div>
     </Link>
